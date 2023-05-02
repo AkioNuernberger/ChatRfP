@@ -10,13 +10,13 @@ token = os.environ.get("OPEN-API-KEY")
 
 
 # Define the path to your data directory
-data_dir = "/Users/akio/Documents/TestChatRfP"
+data_dir = "/Users/akio/Documents/Test"
 
 # Create a new LlamaIndex
 documents = SimpleDirectoryReader (data_dir).load_data()
 index = llama_index.GPTSimpleVectorIndex.from_documents(documents)
 
-# Search for documents in the index
+#Search for documents in the index
 #results = index.search("your search query")
 #for result in results:
     # Print the file path and score for each result
