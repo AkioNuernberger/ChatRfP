@@ -1,6 +1,6 @@
 import llama_index
 from llama_index import GPTSimpleVectorIndex, SimpleDirectoryReader, LLMPredictor, ServiceContext
-from langchain import OpenAI
+from langchain.chat_models import ChatOpenAI
 #import dotenv
 #from dotenv import load_dotenv
 #load_dotenv()
@@ -10,7 +10,7 @@ os.environ['OPENAI_API_KEY'] = 'sk-HjhUFNyBTv633waOjWjXT3BlbkFJWEnsaI2umAhKwM9fH
 token = os.environ.get("OPEN-API-KEY")
 
 #Define LLM
-llm_predictor = LLMPredictor(llm=OpenAI(temperature=0, model_name="gpt-4")) 
+llm_predictor = LLMPredictor(llm=ChatOpenAI(temperature=0, model_name="gpt-4")) 
 service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor)
 
 
@@ -34,5 +34,5 @@ while True:
     response.source_nodes
     print(response)
     print("source nodes", response.source_nodes)
-    print("source nodes formatted", response.get_formatted_sources)
+   
     
