@@ -1,5 +1,6 @@
 import llama_index
-from llama_index import GPTSimpleVectorIndex, SimpleDirectoryReader
+from llama_index import GPTSimpleVectorIndex, SimpleDirectoryReader, LLMPredictor, ServiceContext
+from langchain import OpenAI
 #import dotenv
 #from dotenv import load_dotenv
 #load_dotenv()
@@ -8,23 +9,18 @@ import os
 os.environ['OPENAI_API_KEY'] = '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'
 token = os.environ.get("OPEN-API-KEY")
 
+#Define LLM
+llm_predictor = LLMPredictor(llm=OpenAI(temperature=0, model_name="gpt-4")) 
+service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor)
+
+
 
 # Define the path to your data directory
 data_dir = "/Users/akio/Documents/Test"
 
 # Create a new LlamaIndex
 documents = SimpleDirectoryReader (data_dir).load_data()
-index = llama_index.GPTSimpleVectorIndex.from_documents(documents)
-
-#Search for documents in the index
-#results = index.search("your search query")
-#for result in results:
-    # Print the file path and score for each result
-    #print(result["path"], result["score"])
-
-# load gdocs and index them 
-#documents = loader.load_data(document_ids=gdoc_ids)
-#whatindex = GPTSimpleVectorIndex(documents)
+index = llama_index.GPTSimpleVectorIndex.from_documents(documents, service_context=service_context)
 
 # Save your index to a index.json file
 index.save_to_disk('index.json')
@@ -35,5 +31,8 @@ index = GPTSimpleVectorIndex.load_from_disk('index.json')
 while True:
     prompt = input("Type prompt...")
     response = index.query(prompt)
+    response.source_nodes
     print(response)
+    print("source nodes", response.source_nodes)
+    print("source nodes formatted", response.get_formatted_sources)
     
